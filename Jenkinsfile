@@ -33,6 +33,7 @@ stages{
                 stage ('Deploy to Staging'){
                     steps {
                         sh "scp -i /home/Jenkins/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat_dev}:/var/lib/tomcat7/webapps"
+                        sh "ssh ec2-user@${params.tomcat_dev}: -i tomcat-demo.pem sudo mv **/target/*.war /var/lib/tomcat7/webapps"
                     }
                 }
 
