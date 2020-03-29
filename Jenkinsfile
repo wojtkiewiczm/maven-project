@@ -33,13 +33,15 @@ stages{
                 stage ('Deploy to Staging'){
                     steps {
                         sh "scp -o StrictHostKeyChecking=no -i /home/Jenkins/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat_dev}:"
-                        sh "ssh ec2-user@${params.tomcat_dev}: -i tomcat-demo.pem sudo mv **/target/*.war /var/lib/tomcat7/webapps"
+                        sh "ssh ec2-user@${params.tomcat_dev}: -i /home/Jenkins/tomcat-demo.pem sudo mv **/target/*.war /var/lib/tomcat7/webapps"
                     }
                 }
 
                 stage ("Deploy to Production"){
                     steps {
-                        sh "scp -i /home/Jenkins/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat_prod}:/var/lib/tomcat7/webapps"
+                        sh "scp -o StrictHostKeyChecking=no -i /home/Jenkins/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat_prod}:"
+                        sh "ssh ec2-user@${params.tomcat_prod}: -i /home/Jenkins/tomcat-demo.pem sudo mv **/target/*.war /var/lib/tomcat7/webapps"
+
                     }
                 }
             }
